@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const db = require("./firebase");
-const { collection, getDocs } = require("firebase/firestore");
-
+const { collection, getDocs, doc, getDoc, addDoc, deleteDoc, updateDoc } = require("firebase/firestore");
 // GET all messages from collection MESSAGES
 router.get("/", async (req, res) => {
   try {
@@ -12,7 +11,7 @@ router.get("/", async (req, res) => {
     const messagesCol = collection(db, "MESSAGES");
     const messageSnapshot = await getDocs(messagesCol);
     messageSnapshot.forEach((doc) => {
-      allDocs.push(doc.data());
+      allDocs.push({ id: doc.id, ...doc.data() });
     });
 
     res.status(200).json(allDocs);
@@ -44,6 +43,8 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const messageId = req.params.id;
+
+    console.log(messageId);
 
     const messagesCol = collection(db, "MESSAGES");
     const messageDoc = doc(messagesCol, messageId);
