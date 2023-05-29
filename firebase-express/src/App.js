@@ -10,14 +10,22 @@ function App() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    axios.get(url)
-      .then(response => {
-        setMessages(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    fetchMessages();
   }, []);
+
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get(url);
+      setMessages(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addMessage = (name, message) => {
+    const newMessage = { name, message };
+    setMessages([...messages, newMessage]);
+  };
 
   const handleDelete = id => {
     setMessages(messages.filter(message => message.id !== id));
@@ -26,7 +34,7 @@ function App() {
   return (
     <div className='app-container'>
       <div className='form-container'>
-        <Form />
+        <Form addMessage={addMessage}/>
       </div>
       <div className='message-container'>
         {messages.map(message => (

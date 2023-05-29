@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './styles.css';
 import axios from 'axios';
 
-function Form() {
+function Form({ addMessage }) {
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
 
@@ -11,6 +11,19 @@ function Form() {
         sendMessage(name, message);
         setName('');
         setMessage('');
+    };
+
+    const sendMessage = (name, message) => {
+        const url = 'http://localhost:9000/messages';
+
+        axios.post(url, { name, message })
+        .then(response => {
+            console.log(response.data);
+            addMessage(name, message);
+        })
+        .catch(error => {
+            console.error(error);
+        });
     };
 
     return (
@@ -22,18 +35,6 @@ function Form() {
         </form>
         </div>
     );
-}
-
-function sendMessage(name, message) {
-    const url = 'http://localhost:9000/api/messages';
-
-    axios.post(url, { name, message })
-        .then(response => {
-        console.log(response.data);
-        })
-        .catch(error => {
-        console.error(error);
-        });
 }
 
 export default Form;
