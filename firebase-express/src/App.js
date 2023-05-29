@@ -1,35 +1,19 @@
 import React from 'react';
+import Form from './Form';
+import Message from './Message';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { apiResponse: "" };
-  }
-  
-  callAPI() {
-    fetch("http://localhost:9000/testAPI")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
-  }
-  
-  componentWillMount() {
-        this.callAPI();
-  }
-  
-  render() {
-    return (
-      <div style={{ textAlign: 'center' }}>
-        <header>
-          <p>
-            {this.state.apiResponse}
-          </p>
-          <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-            Learn React
-          </a>
-        </header>
+function App() {
+  return (
+    <div className='app-container'>
+      <div className='form-container'>
+        <Form />
       </div>
-    );
-  }
+      <div className='message-container'>
+        <Message />
+        <Message />
+      </div>
+    </div>
+  );
 }
 
 export default App;
